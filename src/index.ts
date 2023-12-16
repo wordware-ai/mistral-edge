@@ -59,7 +59,7 @@ export namespace MistralAIChatTypes {
  * @param options.apiUrl The url of the Mistral AI (or compatible) API. Defaults to https://api.mistral.ai/v1/chat/completions
  * @returns An AsyncGenerator that streams the string completions from the API.
  */
-export async function* streamMistralChat(
+export default async function* streamMistralChat(
   messages: MistralAIChatTypes.Message[],
   config: MistralAIChatTypes.Config,
   options?: { signal?: AbortSignal; apiKey?: string; apiUrl?: string },
