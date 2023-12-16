@@ -62,12 +62,12 @@ export namespace MistralAIChatTypes {
 export async function* streamMistralChat(
   messages: MistralAIChatTypes.Message[],
   config: MistralAIChatTypes.Config,
-  options: { signal?: AbortSignal; apiKey?: string; apiUrl?: string },
+  options?: { signal?: AbortSignal; apiKey?: string; apiUrl?: string },
 ): AsyncGenerator<string, void, void> {
-  const r = await fetch(options.apiUrl ?? MISTRAL_CHAT_COMPLETIONS_API_URL, {
+  const r = await fetch(options?.apiUrl ?? MISTRAL_CHAT_COMPLETIONS_API_URL, {
     method: "post",
     headers: {
-      Authorization: `Bearer ${options.apiKey ?? process.env.MISTRAL_API_KEY}`,
+      Authorization: `Bearer ${options?.apiKey ?? process.env.MISTRAL_API_KEY}`,
       "Content-Type": "application/json",
     },
     body: JSON.stringify({
@@ -80,7 +80,7 @@ export async function* streamMistralChat(
       stream: true,
       safe_prompt: config.safeMode,
     }),
-    signal: options.signal,
+    signal: options?.signal,
   });
 
   if (!r.ok || !r.body) {
