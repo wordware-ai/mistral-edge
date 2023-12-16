@@ -64,10 +64,19 @@ export async function* streamMistralChat(
   config: MistralAIChatTypes.Config,
   options?: { signal?: AbortSignal; apiKey?: string; apiUrl?: string },
 ): AsyncGenerator<string, void, void> {
+  let apiKey = options?.apiKey;
+  if (!apiKey) {
+    if (typeof process !== undefined) {
+      apiKey = process.env.MISTRAL_API_KEY;
+    } else {
+      throw Error("No API key provided and can't read from env vars");
+    }
+  }
+
   const r = await fetch(options?.apiUrl ?? MISTRAL_CHAT_COMPLETIONS_API_URL, {
     method: "post",
     headers: {
-      Authorization: `Bearer ${options?.apiKey ?? process.env.MISTRAL_API_KEY}`,
+      Authorization: `Bearer ${apiKey}`,
       "Content-Type": "application/json",
     },
     body: JSON.stringify({
